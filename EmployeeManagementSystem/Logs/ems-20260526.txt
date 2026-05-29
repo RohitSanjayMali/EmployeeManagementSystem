@@ -1,0 +1,497 @@
+2026-05-26 18:39:03.452 +05:30 [INF] Executed DbCommand (236ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+CREATE DATABASE [EmployeeManagement2];
+2026-05-26 18:39:03.709 +05:30 [INF] Executed DbCommand (189ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+IF SERVERPROPERTY('EngineEdition') <> 5
+BEGIN
+    ALTER DATABASE [EmployeeManagement2] SET READ_COMMITTED_SNAPSHOT ON;
+END;
+2026-05-26 18:39:03.775 +05:30 [INF] Executed DbCommand (12ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-05-26 18:39:03.780 +05:30 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2026-05-26 18:39:03.835 +05:30 [INF] Executed DbCommand (51ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DECLARE @result int;
+EXEC @result = sp_getapplock @Resource = '__EFMigrationsLock', @LockOwner = 'Session', @LockMode = 'Exclusive';
+SELECT @result
+2026-05-26 18:39:03.957 +05:30 [INF] Executed DbCommand (18ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+IF OBJECT_ID(N'[__EFMigrationsHistory]') IS NULL
+BEGIN
+    CREATE TABLE [__EFMigrationsHistory] (
+        [MigrationId] nvarchar(150) NOT NULL,
+        [ProductVersion] nvarchar(32) NOT NULL,
+        CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY ([MigrationId])
+    );
+END;
+2026-05-26 18:39:03.980 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-05-26 18:39:03.982 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2026-05-26 18:39:03.995 +05:30 [INF] Executed DbCommand (10ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2026-05-26 18:39:04.016 +05:30 [INF] Applying migration '20260526130818_InitialCreate'.
+2026-05-26 18:39:04.143 +05:30 [INF] Executed DbCommand (7ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [AspNetRoles] (
+    [Id] nvarchar(450) NOT NULL,
+    [Name] nvarchar(256) NULL,
+    [NormalizedName] nvarchar(256) NULL,
+    [ConcurrencyStamp] nvarchar(max) NULL,
+    CONSTRAINT [PK_AspNetRoles] PRIMARY KEY ([Id])
+);
+2026-05-26 18:39:04.146 +05:30 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [AspNetUsers] (
+    [Id] nvarchar(450) NOT NULL,
+    [UserName] nvarchar(256) NULL,
+    [NormalizedUserName] nvarchar(256) NULL,
+    [Email] nvarchar(256) NULL,
+    [NormalizedEmail] nvarchar(256) NULL,
+    [EmailConfirmed] bit NOT NULL,
+    [PasswordHash] nvarchar(max) NULL,
+    [SecurityStamp] nvarchar(max) NULL,
+    [ConcurrencyStamp] nvarchar(max) NULL,
+    [PhoneNumber] nvarchar(max) NULL,
+    [PhoneNumberConfirmed] bit NOT NULL,
+    [TwoFactorEnabled] bit NOT NULL,
+    [LockoutEnd] datetimeoffset NULL,
+    [LockoutEnabled] bit NOT NULL,
+    [AccessFailedCount] int NOT NULL,
+    CONSTRAINT [PK_AspNetUsers] PRIMARY KEY ([Id])
+);
+2026-05-26 18:39:04.150 +05:30 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Departments] (
+    [Id] int NOT NULL IDENTITY,
+    [Name] nvarchar(100) NOT NULL,
+    [Description] nvarchar(max) NULL,
+    [CreateDate] datetime2 NOT NULL,
+    [IsActive] bit NOT NULL,
+    CONSTRAINT [PK_Departments] PRIMARY KEY ([Id])
+);
+2026-05-26 18:39:04.154 +05:30 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [AspNetRoleClaims] (
+    [Id] int NOT NULL IDENTITY,
+    [RoleId] nvarchar(450) NOT NULL,
+    [ClaimType] nvarchar(max) NULL,
+    [ClaimValue] nvarchar(max) NULL,
+    CONSTRAINT [PK_AspNetRoleClaims] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_AspNetRoleClaims_AspNetRoles_RoleId] FOREIGN KEY ([RoleId]) REFERENCES [AspNetRoles] ([Id]) ON DELETE CASCADE
+);
+2026-05-26 18:39:04.158 +05:30 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [AspNetUserClaims] (
+    [Id] int NOT NULL IDENTITY,
+    [UserId] nvarchar(450) NOT NULL,
+    [ClaimType] nvarchar(max) NULL,
+    [ClaimValue] nvarchar(max) NULL,
+    CONSTRAINT [PK_AspNetUserClaims] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_AspNetUserClaims_AspNetUsers_UserId] FOREIGN KEY ([UserId]) REFERENCES [AspNetUsers] ([Id]) ON DELETE CASCADE
+);
+2026-05-26 18:39:04.161 +05:30 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [AspNetUserLogins] (
+    [LoginProvider] nvarchar(128) NOT NULL,
+    [ProviderKey] nvarchar(128) NOT NULL,
+    [ProviderDisplayName] nvarchar(max) NULL,
+    [UserId] nvarchar(450) NOT NULL,
+    CONSTRAINT [PK_AspNetUserLogins] PRIMARY KEY ([LoginProvider], [ProviderKey]),
+    CONSTRAINT [FK_AspNetUserLogins_AspNetUsers_UserId] FOREIGN KEY ([UserId]) REFERENCES [AspNetUsers] ([Id]) ON DELETE CASCADE
+);
+2026-05-26 18:39:04.169 +05:30 [INF] Executed DbCommand (8ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [AspNetUserRoles] (
+    [UserId] nvarchar(450) NOT NULL,
+    [RoleId] nvarchar(450) NOT NULL,
+    CONSTRAINT [PK_AspNetUserRoles] PRIMARY KEY ([UserId], [RoleId]),
+    CONSTRAINT [FK_AspNetUserRoles_AspNetRoles_RoleId] FOREIGN KEY ([RoleId]) REFERENCES [AspNetRoles] ([Id]) ON DELETE CASCADE,
+    CONSTRAINT [FK_AspNetUserRoles_AspNetUsers_UserId] FOREIGN KEY ([UserId]) REFERENCES [AspNetUsers] ([Id]) ON DELETE CASCADE
+);
+2026-05-26 18:39:04.175 +05:30 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [AspNetUserTokens] (
+    [UserId] nvarchar(450) NOT NULL,
+    [LoginProvider] nvarchar(128) NOT NULL,
+    [Name] nvarchar(128) NOT NULL,
+    [Value] nvarchar(max) NULL,
+    CONSTRAINT [PK_AspNetUserTokens] PRIMARY KEY ([UserId], [LoginProvider], [Name]),
+    CONSTRAINT [FK_AspNetUserTokens_AspNetUsers_UserId] FOREIGN KEY ([UserId]) REFERENCES [AspNetUsers] ([Id]) ON DELETE CASCADE
+);
+2026-05-26 18:39:04.179 +05:30 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Employees] (
+    [Id] int NOT NULL IDENTITY,
+    [FirstName] nvarchar(50) NOT NULL,
+    [LastName] nvarchar(50) NOT NULL,
+    [Email] nvarchar(max) NOT NULL,
+    [Phone] nvarchar(max) NOT NULL,
+    [Position] nvarchar(max) NOT NULL,
+    [Salary] decimal(18,2) NOT NULL,
+    [ProfileImage] nvarchar(max) NULL,
+    [JoiningDate] datetime2 NOT NULL,
+    [IsActive] bit NOT NULL,
+    [DepartmentId] int NOT NULL,
+    CONSTRAINT [PK_Employees] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Employees_Departments_DepartmentId] FOREIGN KEY ([DepartmentId]) REFERENCES [Departments] ([Id]) ON DELETE CASCADE
+);
+2026-05-26 18:39:04.872 +05:30 [INF] Executed DbCommand (118ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'CreateDate', N'Description', N'IsActive', N'Name') AND [object_id] = OBJECT_ID(N'[Departments]'))
+    SET IDENTITY_INSERT [Departments] ON;
+INSERT INTO [Departments] ([Id], [CreateDate], [Description], [IsActive], [Name])
+VALUES (1, '2024-01-01T00:00:00.0000000', N'Information Technology', CAST(0 AS bit), N'IT'),
+(2, '2024-01-01T00:00:00.0000000', N'Human Resources', CAST(0 AS bit), N'HR'),
+(3, '2024-01-01T00:00:00.0000000', N'Finance & Accounts', CAST(0 AS bit), N'Finance'),
+(4, '2024-01-01T00:00:00.0000000', N'Marketing & Sales', CAST(0 AS bit), N'Marketing'),
+(5, '2024-01-01T00:00:00.0000000', N'Operations & Logistics', CAST(0 AS bit), N'Operations');
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'CreateDate', N'Description', N'IsActive', N'Name') AND [object_id] = OBJECT_ID(N'[Departments]'))
+    SET IDENTITY_INSERT [Departments] OFF;
+2026-05-26 18:39:04.877 +05:30 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_AspNetRoleClaims_RoleId] ON [AspNetRoleClaims] ([RoleId]);
+2026-05-26 18:39:04.880 +05:30 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE UNIQUE INDEX [RoleNameIndex] ON [AspNetRoles] ([NormalizedName]) WHERE [NormalizedName] IS NOT NULL;
+2026-05-26 18:39:04.886 +05:30 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_AspNetUserClaims_UserId] ON [AspNetUserClaims] ([UserId]);
+2026-05-26 18:39:04.888 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_AspNetUserLogins_UserId] ON [AspNetUserLogins] ([UserId]);
+2026-05-26 18:39:04.889 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_AspNetUserRoles_RoleId] ON [AspNetUserRoles] ([RoleId]);
+2026-05-26 18:39:04.891 +05:30 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [EmailIndex] ON [AspNetUsers] ([NormalizedEmail]);
+2026-05-26 18:39:04.893 +05:30 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE UNIQUE INDEX [UserNameIndex] ON [AspNetUsers] ([NormalizedUserName]) WHERE [NormalizedUserName] IS NOT NULL;
+2026-05-26 18:39:04.895 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Employees_DepartmentId] ON [Employees] ([DepartmentId]);
+2026-05-26 18:39:04.899 +05:30 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20260526130818_InitialCreate', N'9.0.0');
+2026-05-26 18:39:04.917 +05:30 [INF] Executed DbCommand (8ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DECLARE @result int;
+EXEC @result = sp_releaseapplock @Resource = '__EFMigrationsLock', @LockOwner = 'Session';
+SELECT @result
+2026-05-26 18:40:02.643 +05:30 [INF] Executed DbCommand (48ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-05-26 18:40:02.781 +05:30 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2026-05-26 18:40:02.877 +05:30 [INF] Executed DbCommand (80ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DECLARE @result int;
+EXEC @result = sp_getapplock @Resource = '__EFMigrationsLock', @LockOwner = 'Session', @LockMode = 'Exclusive';
+SELECT @result
+2026-05-26 18:40:03.111 +05:30 [INF] Executed DbCommand (32ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+IF OBJECT_ID(N'[__EFMigrationsHistory]') IS NULL
+BEGIN
+    CREATE TABLE [__EFMigrationsHistory] (
+        [MigrationId] nvarchar(150) NOT NULL,
+        [ProductVersion] nvarchar(32) NOT NULL,
+        CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY ([MigrationId])
+    );
+END;
+2026-05-26 18:40:03.147 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-05-26 18:40:03.154 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2026-05-26 18:40:03.172 +05:30 [INF] Executed DbCommand (8ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2026-05-26 18:40:03.206 +05:30 [INF] No migrations were applied. The database is already up to date.
+2026-05-26 18:40:03.231 +05:30 [INF] Executed DbCommand (13ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DECLARE @result int;
+EXEC @result = sp_releaseapplock @Resource = '__EFMigrationsLock', @LockOwner = 'Session';
+SELECT @result
+2026-05-26 18:40:03.313 +05:30 [INF] User profile is available. Using 'C:\Users\Admin\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-05-26 18:40:04.342 +05:30 [INF] Executed DbCommand (94ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2026-05-26 18:40:04.387 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2026-05-26 18:40:04.715 +05:30 [INF] Executed DbCommand (76ms) [Parameters=[@p0='?' (Size = 450), @p1='?' (Size = 4000), @p2='?' (Size = 256), @p3='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [AspNetRoles] ([Id], [ConcurrencyStamp], [Name], [NormalizedName])
+VALUES (@p0, @p1, @p2, @p3);
+2026-05-26 18:40:04.785 +05:30 [INF] Executed DbCommand (37ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2026-05-26 18:40:04.792 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2026-05-26 18:40:04.818 +05:30 [INF] Executed DbCommand (4ms) [Parameters=[@p0='?' (Size = 450), @p1='?' (Size = 4000), @p2='?' (Size = 256), @p3='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [AspNetRoles] ([Id], [ConcurrencyStamp], [Name], [NormalizedName])
+VALUES (@p0, @p1, @p2, @p3);
+2026-05-26 18:40:04.860 +05:30 [INF] Executed DbCommand (12ms) [Parameters=[@__normalizedEmail_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedEmail] = @__normalizedEmail_0
+2026-05-26 18:40:05.115 +05:30 [INF] Executed DbCommand (10ms) [Parameters=[@__normalizedUserName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedUserName] = @__normalizedUserName_0
+2026-05-26 18:40:05.217 +05:30 [INF] Executed DbCommand (7ms) [Parameters=[@p0='?' (Size = 450), @p1='?' (DbType = Int32), @p2='?' (Size = 4000), @p3='?' (Size = 256), @p4='?' (DbType = Boolean), @p5='?' (DbType = Boolean), @p6='?' (DbType = DateTimeOffset), @p7='?' (Size = 256), @p8='?' (Size = 256), @p9='?' (Size = 4000), @p10='?' (Size = 4000), @p11='?' (DbType = Boolean), @p12='?' (Size = 4000), @p13='?' (DbType = Boolean), @p14='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [AspNetUsers] ([Id], [AccessFailedCount], [ConcurrencyStamp], [Email], [EmailConfirmed], [LockoutEnabled], [LockoutEnd], [NormalizedEmail], [NormalizedUserName], [PasswordHash], [PhoneNumber], [PhoneNumberConfirmed], [SecurityStamp], [TwoFactorEnabled], [UserName])
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, @p13, @p14);
+2026-05-26 18:40:05.256 +05:30 [INF] Executed DbCommand (9ms) [Parameters=[@__normalizedRoleName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedRoleName_0
+2026-05-26 18:40:05.380 +05:30 [INF] Executed DbCommand (10ms) [Parameters=[@__p_0='?' (Size = 450), @__p_1='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[UserId], [a].[RoleId]
+FROM [AspNetUserRoles] AS [a]
+WHERE [a].[UserId] = @__p_0 AND [a].[RoleId] = @__p_1
+2026-05-26 18:40:05.413 +05:30 [INF] Executed DbCommand (11ms) [Parameters=[@__normalizedRoleName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedRoleName_0
+2026-05-26 18:40:05.615 +05:30 [INF] Executed DbCommand (107ms) [Parameters=[@__normalizedUserName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedUserName] = @__normalizedUserName_0
+2026-05-26 18:40:05.895 +05:30 [INF] Executed DbCommand (165ms) [Parameters=[@p0='?' (Size = 450), @p1='?' (Size = 450), @p16='?' (Size = 450), @p2='?' (DbType = Int32), @p3='?' (Size = 4000), @p17='?' (Size = 4000), @p4='?' (Size = 256), @p5='?' (DbType = Boolean), @p6='?' (DbType = Boolean), @p7='?' (DbType = DateTimeOffset), @p8='?' (Size = 256), @p9='?' (Size = 256), @p10='?' (Size = 4000), @p11='?' (Size = 4000), @p12='?' (DbType = Boolean), @p13='?' (Size = 4000), @p14='?' (DbType = Boolean), @p15='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SET NOCOUNT ON;
+INSERT INTO [AspNetUserRoles] ([RoleId], [UserId])
+VALUES (@p0, @p1);
+UPDATE [AspNetUsers] SET [AccessFailedCount] = @p2, [ConcurrencyStamp] = @p3, [Email] = @p4, [EmailConfirmed] = @p5, [LockoutEnabled] = @p6, [LockoutEnd] = @p7, [NormalizedEmail] = @p8, [NormalizedUserName] = @p9, [PasswordHash] = @p10, [PhoneNumber] = @p11, [PhoneNumberConfirmed] = @p12, [SecurityStamp] = @p13, [TwoFactorEnabled] = @p14, [UserName] = @p15
+OUTPUT 1
+WHERE [Id] = @p16 AND [ConcurrencyStamp] = @p17;
+2026-05-26 18:40:07.574 +05:30 [INF] Now listening on: https://localhost:7045
+2026-05-26 18:40:07.577 +05:30 [INF] Now listening on: http://localhost:5186
+2026-05-26 18:40:07.658 +05:30 [INF] Application started. Press Ctrl+C to shut down.
+2026-05-26 18:40:07.661 +05:30 [INF] Hosting environment: Development
+2026-05-26 18:40:07.663 +05:30 [INF] Content root path: C:\Users\Admin\OneDrive\Desktop\Assinment\EmployeeManagementSystem\EmployeeManagementSystem\EmployeeManagementSystem
+2026-05-26 18:40:09.654 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7045/ - null null
+2026-05-26 18:40:10.249 +05:30 [INF] Executing endpoint 'EmployeeManagementSystem.Controllers.HomeController.Index (EmployeeManagementSystem)'
+2026-05-26 18:40:10.287 +05:30 [INF] Route matched with {action = "Index", controller = "Home", page = "", area = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index() on controller EmployeeManagementSystem.Controllers.HomeController (EmployeeManagementSystem).
+2026-05-26 18:40:10.332 +05:30 [INF] Executing RedirectResult, redirecting to /Auth/Login.
+2026-05-26 18:40:10.347 +05:30 [INF] Executed action EmployeeManagementSystem.Controllers.HomeController.Index (EmployeeManagementSystem) in 43.7732ms
+2026-05-26 18:40:10.353 +05:30 [INF] Executed endpoint 'EmployeeManagementSystem.Controllers.HomeController.Index (EmployeeManagementSystem)'
+2026-05-26 18:40:10.366 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7045/ - 302 0 null 730.0975ms
+2026-05-26 18:40:10.383 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7045/Auth/Login - null null
+2026-05-26 18:40:10.400 +05:30 [INF] Executing endpoint 'EmployeeManagementSystem.Controllers.AuthController.Login (EmployeeManagementSystem)'
+2026-05-26 18:40:10.408 +05:30 [INF] Route matched with {action = "Login", controller = "Auth", page = "", area = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Login() on controller EmployeeManagementSystem.Controllers.AuthController (EmployeeManagementSystem).
+2026-05-26 18:40:10.506 +05:30 [INF] Executing ViewResult, running view Login.
+2026-05-26 18:40:10.817 +05:30 [INF] Executed ViewResult - view Login executed in 326.5791ms.
+2026-05-26 18:40:10.873 +05:30 [INF] Executed action EmployeeManagementSystem.Controllers.AuthController.Login (EmployeeManagementSystem) in 460.5715ms
+2026-05-26 18:40:10.904 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7045/_framework/aspnetcore-browser-refresh.js - null null
+2026-05-26 18:40:10.904 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7045/_vs/browserLink - null null
+2026-05-26 18:40:10.954 +05:30 [INF] Executed endpoint 'EmployeeManagementSystem.Controllers.AuthController.Login (EmployeeManagementSystem)'
+2026-05-26 18:40:11.006 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7045/_framework/aspnetcore-browser-refresh.js - 200 16533 application/javascript; charset=utf-8 101.6117ms
+2026-05-26 18:40:11.025 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7045/Auth/Login - 200 null text/html; charset=utf-8 643.0301ms
+2026-05-26 18:40:11.210 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7045/_vs/browserLink - 200 null text/javascript; charset=UTF-8 305.1433ms
+2026-05-26 18:40:17.049 +05:30 [INF] Request starting HTTP/2 POST https://localhost:7045/Auth/Login - application/x-www-form-urlencoded 216
+2026-05-26 18:40:17.073 +05:30 [INF] Executing endpoint 'EmployeeManagementSystem.Controllers.AuthController.Login (EmployeeManagementSystem)'
+2026-05-26 18:40:17.113 +05:30 [INF] Route matched with {action = "Login", controller = "Auth", page = "", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(EmployeeManagementSystem.ViewModels.LoginViewModel) on controller EmployeeManagementSystem.Controllers.AuthController (EmployeeManagementSystem).
+2026-05-26 18:40:17.179 +05:30 [INF] Executing ViewResult, running view Login.
+2026-05-26 18:40:17.193 +05:30 [INF] Executed ViewResult - view Login executed in 14.4292ms.
+2026-05-26 18:40:17.196 +05:30 [INF] Executed action EmployeeManagementSystem.Controllers.AuthController.Login (EmployeeManagementSystem) in 79.278ms
+2026-05-26 18:40:17.198 +05:30 [INF] Executed endpoint 'EmployeeManagementSystem.Controllers.AuthController.Login (EmployeeManagementSystem)'
+2026-05-26 18:40:17.200 +05:30 [INF] Request finished HTTP/2 POST https://localhost:7045/Auth/Login - 200 null text/html; charset=utf-8 151.0055ms
+2026-05-26 18:40:17.232 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7045/_vs/browserLink - null null
+2026-05-26 18:40:17.233 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7045/_framework/aspnetcore-browser-refresh.js - null null
+2026-05-26 18:40:17.255 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7045/_framework/aspnetcore-browser-refresh.js - 200 16533 application/javascript; charset=utf-8 21.986ms
+2026-05-26 18:40:17.266 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7045/_vs/browserLink - 200 null text/javascript; charset=UTF-8 33.8801ms
+2026-05-26 18:40:22.543 +05:30 [INF] Request starting HTTP/2 POST https://localhost:7045/Auth/Login - application/x-www-form-urlencoded 249
+2026-05-26 18:40:22.552 +05:30 [INF] Executing endpoint 'EmployeeManagementSystem.Controllers.AuthController.Login (EmployeeManagementSystem)'
+2026-05-26 18:40:22.555 +05:30 [INF] Route matched with {action = "Login", controller = "Auth", page = "", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(EmployeeManagementSystem.ViewModels.LoginViewModel) on controller EmployeeManagementSystem.Controllers.AuthController (EmployeeManagementSystem).
+2026-05-26 18:40:22.564 +05:30 [INF] Executing ViewResult, running view Login.
+2026-05-26 18:40:22.571 +05:30 [INF] Executed ViewResult - view Login executed in 7.4459ms.
+2026-05-26 18:40:22.575 +05:30 [INF] Executed action EmployeeManagementSystem.Controllers.AuthController.Login (EmployeeManagementSystem) in 18.2292ms
+2026-05-26 18:40:22.577 +05:30 [INF] Executed endpoint 'EmployeeManagementSystem.Controllers.AuthController.Login (EmployeeManagementSystem)'
+2026-05-26 18:40:22.579 +05:30 [INF] Request finished HTTP/2 POST https://localhost:7045/Auth/Login - 200 null text/html; charset=utf-8 36.4722ms
+2026-05-26 18:40:22.595 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7045/_framework/aspnetcore-browser-refresh.js - null null
+2026-05-26 18:40:22.595 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7045/_vs/browserLink - null null
+2026-05-26 18:40:22.602 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7045/_framework/aspnetcore-browser-refresh.js - 200 16533 application/javascript; charset=utf-8 6.5961ms
+2026-05-26 18:40:22.621 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7045/_vs/browserLink - 200 null text/javascript; charset=UTF-8 26.4478ms
+2026-05-26 18:40:25.932 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7045/Auth/Register - null null
+2026-05-26 18:40:25.941 +05:30 [INF] Executing endpoint 'EmployeeManagementSystem.Controllers.AuthController.Register (EmployeeManagementSystem)'
+2026-05-26 18:40:25.944 +05:30 [INF] Route matched with {action = "Register", controller = "Auth", page = "", area = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Register() on controller EmployeeManagementSystem.Controllers.AuthController (EmployeeManagementSystem).
+2026-05-26 18:40:25.950 +05:30 [INF] Executing ViewResult, running view Register.
+2026-05-26 18:40:25.968 +05:30 [INF] Executed ViewResult - view Register executed in 19.2729ms.
+2026-05-26 18:40:25.971 +05:30 [INF] Executed action EmployeeManagementSystem.Controllers.AuthController.Register (EmployeeManagementSystem) in 22.8547ms
+2026-05-26 18:40:25.973 +05:30 [INF] Executed endpoint 'EmployeeManagementSystem.Controllers.AuthController.Register (EmployeeManagementSystem)'
+2026-05-26 18:40:25.975 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7045/Auth/Register - 200 null text/html; charset=utf-8 42.5409ms
+2026-05-26 18:40:25.990 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7045/_vs/browserLink - null null
+2026-05-26 18:40:25.995 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7045/_framework/aspnetcore-browser-refresh.js - null null
+2026-05-26 18:40:26.001 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7045/_framework/aspnetcore-browser-refresh.js - 200 16533 application/javascript; charset=utf-8 6.122ms
+2026-05-26 18:40:26.002 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7045/_vs/browserLink - 200 null text/javascript; charset=UTF-8 11.9259ms
+2026-05-26 18:40:53.981 +05:30 [INF] Request starting HTTP/2 POST https://localhost:7045/Auth/Register - application/x-www-form-urlencoded 261
+2026-05-26 18:40:54.023 +05:30 [INF] Executing endpoint 'EmployeeManagementSystem.Controllers.AuthController.Register (EmployeeManagementSystem)'
+2026-05-26 18:40:54.028 +05:30 [INF] Route matched with {action = "Register", controller = "Auth", page = "", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Register(EmployeeManagementSystem.ViewModels.RegisterViewModel) on controller EmployeeManagementSystem.Controllers.AuthController (EmployeeManagementSystem).
+2026-05-26 18:40:54.038 +05:30 [INF] Executing ViewResult, running view Register.
+2026-05-26 18:40:54.041 +05:30 [INF] Executed ViewResult - view Register executed in 3.6735ms.
+2026-05-26 18:40:54.063 +05:30 [INF] Executed action EmployeeManagementSystem.Controllers.AuthController.Register (EmployeeManagementSystem) in 29.8873ms
+2026-05-26 18:40:54.067 +05:30 [INF] Executed endpoint 'EmployeeManagementSystem.Controllers.AuthController.Register (EmployeeManagementSystem)'
+2026-05-26 18:40:54.069 +05:30 [INF] Request finished HTTP/2 POST https://localhost:7045/Auth/Register - 200 null text/html; charset=utf-8 87.8582ms
+2026-05-26 18:40:54.074 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7045/_vs/browserLink - null null
+2026-05-26 18:40:54.084 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7045/_framework/aspnetcore-browser-refresh.js - null null
+2026-05-26 18:40:54.105 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7045/_framework/aspnetcore-browser-refresh.js - 200 16533 application/javascript; charset=utf-8 20.7933ms
+2026-05-26 18:40:54.142 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7045/_vs/browserLink - 200 null text/javascript; charset=UTF-8 67.2441ms
+2026-05-26 18:41:16.809 +05:30 [INF] Request starting HTTP/2 POST https://localhost:7045/Auth/Register - application/x-www-form-urlencoded 275
+2026-05-26 18:41:16.831 +05:30 [INF] Executing endpoint 'EmployeeManagementSystem.Controllers.AuthController.Register (EmployeeManagementSystem)'
+2026-05-26 18:41:16.833 +05:30 [INF] Route matched with {action = "Register", controller = "Auth", page = "", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Register(EmployeeManagementSystem.ViewModels.RegisterViewModel) on controller EmployeeManagementSystem.Controllers.AuthController (EmployeeManagementSystem).
+2026-05-26 18:41:16.954 +05:30 [INF] Executed DbCommand (9ms) [Parameters=[@__normalizedUserName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedUserName] = @__normalizedUserName_0
+2026-05-26 18:41:16.961 +05:30 [INF] Executed DbCommand (2ms) [Parameters=[@p0='?' (Size = 450), @p1='?' (DbType = Int32), @p2='?' (Size = 4000), @p3='?' (Size = 256), @p4='?' (DbType = Boolean), @p5='?' (DbType = Boolean), @p6='?' (DbType = DateTimeOffset), @p7='?' (Size = 256), @p8='?' (Size = 256), @p9='?' (Size = 4000), @p10='?' (Size = 4000), @p11='?' (DbType = Boolean), @p12='?' (Size = 4000), @p13='?' (DbType = Boolean), @p14='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [AspNetUsers] ([Id], [AccessFailedCount], [ConcurrencyStamp], [Email], [EmailConfirmed], [LockoutEnabled], [LockoutEnd], [NormalizedEmail], [NormalizedUserName], [PasswordHash], [PhoneNumber], [PhoneNumberConfirmed], [SecurityStamp], [TwoFactorEnabled], [UserName])
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, @p13, @p14);
+2026-05-26 18:41:16.969 +05:30 [INF] Executed DbCommand (4ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2026-05-26 18:41:16.976 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedRoleName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedRoleName_0
+2026-05-26 18:41:16.981 +05:30 [INF] Executed DbCommand (2ms) [Parameters=[@__p_0='?' (Size = 450), @__p_1='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[UserId], [a].[RoleId]
+FROM [AspNetUserRoles] AS [a]
+WHERE [a].[UserId] = @__p_0 AND [a].[RoleId] = @__p_1
+2026-05-26 18:41:16.987 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedRoleName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedRoleName_0
+2026-05-26 18:41:16.991 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedUserName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedUserName] = @__normalizedUserName_0
+2026-05-26 18:41:16.999 +05:30 [INF] Executed DbCommand (5ms) [Parameters=[@p0='?' (Size = 450), @p1='?' (Size = 450), @p16='?' (Size = 450), @p2='?' (DbType = Int32), @p3='?' (Size = 4000), @p17='?' (Size = 4000), @p4='?' (Size = 256), @p5='?' (DbType = Boolean), @p6='?' (DbType = Boolean), @p7='?' (DbType = DateTimeOffset), @p8='?' (Size = 256), @p9='?' (Size = 256), @p10='?' (Size = 4000), @p11='?' (Size = 4000), @p12='?' (DbType = Boolean), @p13='?' (Size = 4000), @p14='?' (DbType = Boolean), @p15='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SET NOCOUNT ON;
+INSERT INTO [AspNetUserRoles] ([RoleId], [UserId])
+VALUES (@p0, @p1);
+UPDATE [AspNetUsers] SET [AccessFailedCount] = @p2, [ConcurrencyStamp] = @p3, [Email] = @p4, [EmailConfirmed] = @p5, [LockoutEnabled] = @p6, [LockoutEnd] = @p7, [NormalizedEmail] = @p8, [NormalizedUserName] = @p9, [PasswordHash] = @p10, [PhoneNumber] = @p11, [PhoneNumberConfirmed] = @p12, [SecurityStamp] = @p13, [TwoFactorEnabled] = @p14, [UserName] = @p15
+OUTPUT 1
+WHERE [Id] = @p16 AND [ConcurrencyStamp] = @p17;
+2026-05-26 18:41:17.064 +05:30 [INF] Executed DbCommand (4ms) [Parameters=[@__user_Id_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ClaimType], [a].[ClaimValue], [a].[UserId]
+FROM [AspNetUserClaims] AS [a]
+WHERE [a].[UserId] = @__user_Id_0
+2026-05-26 18:41:17.100 +05:30 [INF] Executed DbCommand (9ms) [Parameters=[@__userId_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a0].[Name]
+FROM [AspNetUserRoles] AS [a]
+INNER JOIN [AspNetRoles] AS [a0] ON [a].[RoleId] = [a0].[Id]
+WHERE [a].[UserId] = @__userId_0
+2026-05-26 18:41:17.105 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+FROM [AspNetRoles] AS [a]
+WHERE [a].[NormalizedName] = @__normalizedName_0
+2026-05-26 18:41:17.115 +05:30 [INF] Executed DbCommand (3ms) [Parameters=[@__role_Id_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[ClaimType], [a].[ClaimValue]
+FROM [AspNetRoleClaims] AS [a]
+WHERE [a].[RoleId] = @__role_Id_0
+2026-05-26 18:41:17.125 +05:30 [INF] AuthenticationScheme: Identity.Application signed in.
+2026-05-26 18:41:17.129 +05:30 [INF] Executing RedirectResult, redirecting to /Admin.
+2026-05-26 18:41:17.132 +05:30 [INF] Executed action EmployeeManagementSystem.Controllers.AuthController.Register (EmployeeManagementSystem) in 294.8974ms
+2026-05-26 18:41:17.135 +05:30 [INF] Executed endpoint 'EmployeeManagementSystem.Controllers.AuthController.Register (EmployeeManagementSystem)'
+2026-05-26 18:41:17.139 +05:30 [INF] Request finished HTTP/2 POST https://localhost:7045/Auth/Register - 302 0 null 330.5528ms
+2026-05-26 18:41:17.139 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7045/Admin - null null
+2026-05-26 18:41:17.159 +05:30 [INF] Executing endpoint 'EmployeeManagementSystem.Controllers.AdminController.Index (EmployeeManagementSystem)'
+2026-05-26 18:41:17.164 +05:30 [INF] Route matched with {action = "Index", controller = "Admin", page = "", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Index() on controller EmployeeManagementSystem.Controllers.AdminController (EmployeeManagementSystem).
+2026-05-26 18:41:17.269 +05:30 [INF] Executed DbCommand (9ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [e].[Id], [e].[DepartmentId], [e].[Email], [e].[FirstName], [e].[IsActive], [e].[JoiningDate], [e].[LastName], [e].[Phone], [e].[Position], [e].[ProfileImage], [e].[Salary], [d].[Id], [d].[CreateDate], [d].[Description], [d].[IsActive], [d].[Name]
+FROM [Employees] AS [e]
+INNER JOIN [Departments] AS [d] ON [e].[DepartmentId] = [d].[Id]
+ORDER BY [e].[Id] DESC
+2026-05-26 18:41:17.328 +05:30 [INF] Executed DbCommand (16ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [d].[Id], [d].[CreateDate], [d].[Description], [d].[IsActive], [d].[Name], [e].[Id], [e].[DepartmentId], [e].[Email], [e].[FirstName], [e].[IsActive], [e].[JoiningDate], [e].[LastName], [e].[Phone], [e].[Position], [e].[ProfileImage], [e].[Salary]
+FROM [Departments] AS [d]
+LEFT JOIN [Employees] AS [e] ON [d].[Id] = [e].[DepartmentId]
+ORDER BY [d].[Name], [d].[Id]
+2026-05-26 18:41:17.358 +05:30 [INF] Executing ViewResult, running view Index.
+2026-05-26 18:41:17.387 +05:30 [INF] Executed ViewResult - view Index executed in 29.1852ms.
+2026-05-26 18:41:17.389 +05:30 [INF] Executed action EmployeeManagementSystem.Controllers.AdminController.Index (EmployeeManagementSystem) in 220.7578ms
+2026-05-26 18:41:17.391 +05:30 [INF] Executed endpoint 'EmployeeManagementSystem.Controllers.AdminController.Index (EmployeeManagementSystem)'
+2026-05-26 18:41:17.393 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7045/Admin - 200 null text/html; charset=utf-8 254.235ms
+2026-05-26 18:41:17.418 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7045/_framework/aspnetcore-browser-refresh.js - null null
+2026-05-26 18:41:17.418 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7045/_vs/browserLink - null null
+2026-05-26 18:41:17.422 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7045/_framework/aspnetcore-browser-refresh.js - 200 16533 application/javascript; charset=utf-8 4.145ms
+2026-05-26 18:41:17.433 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7045/_vs/browserLink - 200 null text/javascript; charset=UTF-8 14.8399ms
+2026-05-26 18:41:21.518 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7045/Employee/Index - null null
+2026-05-26 18:41:21.526 +05:30 [INF] Executing endpoint 'EmployeeManagementSystem.Controllers.EmployeeController.Index (EmployeeManagementSystem)'
+2026-05-26 18:41:21.539 +05:30 [INF] Route matched with {action = "Index", controller = "Employee", page = "", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Index(System.String, System.Nullable`1[System.Int32], Int32) on controller EmployeeManagementSystem.Controllers.EmployeeController (EmployeeManagementSystem).
+2026-05-26 18:41:21.577 +05:30 [INF] Executed DbCommand (8ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM [Employees] AS [e]
+2026-05-26 18:41:21.607 +05:30 [INF] Executed DbCommand (9ms) [Parameters=[@__p_0='?' (DbType = Int32), @__p_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [e0].[Id], [e0].[DepartmentId], [e0].[Email], [e0].[FirstName], [e0].[IsActive], [e0].[JoiningDate], [e0].[LastName], [e0].[Phone], [e0].[Position], [e0].[ProfileImage], [e0].[Salary], [d].[Id], [d].[CreateDate], [d].[Description], [d].[IsActive], [d].[Name]
+FROM (
+    SELECT [e].[Id], [e].[DepartmentId], [e].[Email], [e].[FirstName], [e].[IsActive], [e].[JoiningDate], [e].[LastName], [e].[Phone], [e].[Position], [e].[ProfileImage], [e].[Salary]
+    FROM [Employees] AS [e]
+    ORDER BY [e].[Id] DESC
+    OFFSET @__p_0 ROWS FETCH NEXT @__p_1 ROWS ONLY
+) AS [e0]
+INNER JOIN [Departments] AS [d] ON [e0].[DepartmentId] = [d].[Id]
+ORDER BY [e0].[Id] DESC
+2026-05-26 18:41:21.615 +05:30 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [d].[Id], [d].[CreateDate], [d].[Description], [d].[IsActive], [d].[Name], [e].[Id], [e].[DepartmentId], [e].[Email], [e].[FirstName], [e].[IsActive], [e].[JoiningDate], [e].[LastName], [e].[Phone], [e].[Position], [e].[ProfileImage], [e].[Salary]
+FROM [Departments] AS [d]
+LEFT JOIN [Employees] AS [e] ON [d].[Id] = [e].[DepartmentId]
+ORDER BY [d].[Name], [d].[Id]
+2026-05-26 18:41:21.621 +05:30 [INF] Executing ViewResult, running view Index.
+2026-05-26 18:41:21.636 +05:30 [INF] Executed ViewResult - view Index executed in 15.522ms.
+2026-05-26 18:41:21.638 +05:30 [INF] Executed action EmployeeManagementSystem.Controllers.EmployeeController.Index (EmployeeManagementSystem) in 96.7117ms
+2026-05-26 18:41:21.640 +05:30 [INF] Executed endpoint 'EmployeeManagementSystem.Controllers.EmployeeController.Index (EmployeeManagementSystem)'
+2026-05-26 18:41:21.641 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7045/Employee/Index - 200 null text/html; charset=utf-8 122.8248ms
+2026-05-26 18:41:21.658 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7045/_vs/browserLink - null null
+2026-05-26 18:41:21.661 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7045/_framework/aspnetcore-browser-refresh.js - null null
+2026-05-26 18:41:21.668 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7045/_framework/aspnetcore-browser-refresh.js - 200 16533 application/javascript; charset=utf-8 6.3053ms
+2026-05-26 18:41:21.675 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7045/_vs/browserLink - 200 null text/javascript; charset=UTF-8 17.6529ms
+2026-05-26 18:41:25.453 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7045/Employee/Index?searchTerm=&departmentId= - null null
+2026-05-26 18:41:25.466 +05:30 [INF] Executing endpoint 'EmployeeManagementSystem.Controllers.EmployeeController.Index (EmployeeManagementSystem)'
+2026-05-26 18:41:25.469 +05:30 [INF] Route matched with {action = "Index", controller = "Employee", page = "", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Index(System.String, System.Nullable`1[System.Int32], Int32) on controller EmployeeManagementSystem.Controllers.EmployeeController (EmployeeManagementSystem).
+2026-05-26 18:41:25.485 +05:30 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM [Employees] AS [e]
+2026-05-26 18:41:25.492 +05:30 [INF] Executed DbCommand (2ms) [Parameters=[@__p_0='?' (DbType = Int32), @__p_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [e0].[Id], [e0].[DepartmentId], [e0].[Email], [e0].[FirstName], [e0].[IsActive], [e0].[JoiningDate], [e0].[LastName], [e0].[Phone], [e0].[Position], [e0].[ProfileImage], [e0].[Salary], [d].[Id], [d].[CreateDate], [d].[Description], [d].[IsActive], [d].[Name]
+FROM (
+    SELECT [e].[Id], [e].[DepartmentId], [e].[Email], [e].[FirstName], [e].[IsActive], [e].[JoiningDate], [e].[LastName], [e].[Phone], [e].[Position], [e].[ProfileImage], [e].[Salary]
+    FROM [Employees] AS [e]
+    ORDER BY [e].[Id] DESC
+    OFFSET @__p_0 ROWS FETCH NEXT @__p_1 ROWS ONLY
+) AS [e0]
+INNER JOIN [Departments] AS [d] ON [e0].[DepartmentId] = [d].[Id]
+ORDER BY [e0].[Id] DESC
+2026-05-26 18:41:25.506 +05:30 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [d].[Id], [d].[CreateDate], [d].[Description], [d].[IsActive], [d].[Name], [e].[Id], [e].[DepartmentId], [e].[Email], [e].[FirstName], [e].[IsActive], [e].[JoiningDate], [e].[LastName], [e].[Phone], [e].[Position], [e].[ProfileImage], [e].[Salary]
+FROM [Departments] AS [d]
+LEFT JOIN [Employees] AS [e] ON [d].[Id] = [e].[DepartmentId]
+ORDER BY [d].[Name], [d].[Id]
+2026-05-26 18:41:25.510 +05:30 [INF] Executing ViewResult, running view Index.
+2026-05-26 18:41:25.517 +05:30 [INF] Executed ViewResult - view Index executed in 7.7974ms.
+2026-05-26 18:41:25.519 +05:30 [INF] Executed action EmployeeManagementSystem.Controllers.EmployeeController.Index (EmployeeManagementSystem) in 48.3887ms
+2026-05-26 18:41:25.521 +05:30 [INF] Executed endpoint 'EmployeeManagementSystem.Controllers.EmployeeController.Index (EmployeeManagementSystem)'
+2026-05-26 18:41:25.523 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7045/Employee/Index?searchTerm=&departmentId= - 200 null text/html; charset=utf-8 69.2892ms
+2026-05-26 18:41:25.552 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7045/_vs/browserLink - null null
+2026-05-26 18:41:25.556 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7045/_framework/aspnetcore-browser-refresh.js - null null
+2026-05-26 18:41:25.566 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7045/_vs/browserLink - 200 null text/javascript; charset=UTF-8 13.8645ms
+2026-05-26 18:41:25.568 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7045/_framework/aspnetcore-browser-refresh.js - 200 16533 application/javascript; charset=utf-8 12.1727ms
+2026-05-26 18:41:42.710 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7045/.well-known/appspecific/com.chrome.devtools.json - null null
+2026-05-26 18:41:42.718 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7045/.well-known/appspecific/com.chrome.devtools.json - 404 0 null 7.2823ms
+2026-05-26 18:41:42.722 +05:30 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7045/.well-known/appspecific/com.chrome.devtools.json, Response status code: 404
+2026-05-26 18:41:56.512 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7045/Admin/Index - null null
+2026-05-26 18:41:56.519 +05:30 [INF] Executing endpoint 'EmployeeManagementSystem.Controllers.AdminController.Index (EmployeeManagementSystem)'
+2026-05-26 18:41:56.521 +05:30 [INF] Route matched with {action = "Index", controller = "Admin", page = "", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Index() on controller EmployeeManagementSystem.Controllers.AdminController (EmployeeManagementSystem).
+2026-05-26 18:41:56.536 +05:30 [INF] Executed DbCommand (11ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [e].[Id], [e].[DepartmentId], [e].[Email], [e].[FirstName], [e].[IsActive], [e].[JoiningDate], [e].[LastName], [e].[Phone], [e].[Position], [e].[ProfileImage], [e].[Salary], [d].[Id], [d].[CreateDate], [d].[Description], [d].[IsActive], [d].[Name]
+FROM [Employees] AS [e]
+INNER JOIN [Departments] AS [d] ON [e].[DepartmentId] = [d].[Id]
+ORDER BY [e].[Id] DESC
+2026-05-26 18:41:56.545 +05:30 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [d].[Id], [d].[CreateDate], [d].[Description], [d].[IsActive], [d].[Name], [e].[Id], [e].[DepartmentId], [e].[Email], [e].[FirstName], [e].[IsActive], [e].[JoiningDate], [e].[LastName], [e].[Phone], [e].[Position], [e].[ProfileImage], [e].[Salary]
+FROM [Departments] AS [d]
+LEFT JOIN [Employees] AS [e] ON [d].[Id] = [e].[DepartmentId]
+ORDER BY [d].[Name], [d].[Id]
+2026-05-26 18:41:56.549 +05:30 [INF] Executing ViewResult, running view Index.
+2026-05-26 18:41:56.552 +05:30 [INF] Executed ViewResult - view Index executed in 2.3767ms.
+2026-05-26 18:41:56.564 +05:30 [INF] Executed action EmployeeManagementSystem.Controllers.AdminController.Index (EmployeeManagementSystem) in 40.5852ms
+2026-05-26 18:41:56.566 +05:30 [INF] Executed endpoint 'EmployeeManagementSystem.Controllers.AdminController.Index (EmployeeManagementSystem)'
+2026-05-26 18:41:56.568 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7045/Admin/Index - 200 null text/html; charset=utf-8 55.4781ms
+2026-05-26 18:41:56.601 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7045/_vs/browserLink - null null
+2026-05-26 18:41:56.603 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7045/_framework/aspnetcore-browser-refresh.js - null null
+2026-05-26 18:41:56.616 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7045/_framework/aspnetcore-browser-refresh.js - 200 16533 application/javascript; charset=utf-8 13.6007ms
+2026-05-26 18:41:56.726 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7045/.well-known/appspecific/com.chrome.devtools.json - null null
+2026-05-26 18:41:56.739 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7045/_vs/browserLink - 200 null text/javascript; charset=UTF-8 137.5528ms
+2026-05-26 18:41:56.789 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7045/.well-known/appspecific/com.chrome.devtools.json - 404 0 null 95.6993ms
+2026-05-26 18:41:56.826 +05:30 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7045/.well-known/appspecific/com.chrome.devtools.json, Response status code: 404
